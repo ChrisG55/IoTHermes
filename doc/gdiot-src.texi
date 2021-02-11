@@ -31,7 +31,7 @@ In its current form, @command{gdiot-src} enters the main function and returns wi
 @node Options
 @chapter Options
 
-There are no options for @command{gdiot-src}.
+@include common-opts.texi
 
 @include exit.texi
 
