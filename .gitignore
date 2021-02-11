@@ -1,0 +1,14 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+*.d
+*.html
+*.info
+*.o
+*.txt
+*.version
+config.*
+!config.tmpmk
+!doc/config.tmpi
+gdiot-*
+!gdiot-*.c
+!gdiot-*.texi
+/src/gdiotversion.h

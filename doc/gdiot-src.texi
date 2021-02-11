@@ -1,0 +1,47 @@
+\input texinfo @c SPDX-License-Identifier: GPL-3.0-or-later
+@documentencoding UTF-8
+
+@settitle gdiot-src Documentation
+@titlepage
+@center @titlefont{gdiot-src Documentation}
+@end titlepage
+
+@ifnottex
+@node Top
+@top gdiot-src
+
+Chapters in the @command{gdiot-src} documentation.
+@end ifnottex
+
+@contents
+
+@node Synopsis
+@chapter Synopsis
+
+gdiot-src
+
+@node Description
+@chapter Description
+@command{gdiot-src} is a reference implementation of a source node.
+
+@node Detailed description
+@chapter Detailed description
+In its current form, @command{gdiot-src} enters the main function and returns with a successful exit status.
+
+@node Options
+@chapter Options
+
+There are no options for @command{gdiot-src}.
+
+@node Examples
+@chapter Examples
+
+@command{gdiot-src} is run as follows:
+
+@example
+gdiot-src
+@end example
+
+@include authors.texi
+
+@bye

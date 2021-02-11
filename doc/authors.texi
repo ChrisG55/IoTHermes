@@ -1,0 +1,7 @@
+@c SPDX-License-Identifier: GPL-3.0-or-later
+@node Authors
+@chapter Authors
+
+The GDIoT developers.
+
+For details about the authorship, see the Git history of the project, e.g., by typing the @command{git log} in the GDIoT source directory, or by browsing the online repository.
