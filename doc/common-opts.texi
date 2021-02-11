@@ -1,0 +1,8 @@
+@section Generic options
+
+These options are shared among GDIoT programs.
+
+@table @option
+@item -h
+Show help
+@end table

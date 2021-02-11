@@ -79,6 +79,8 @@ Instead it provides a configuration template @file{config.tmpmk} that needs to b
 After modifying the configuration template save it as @file{config.mk} in @acronym{GDIoT}'s root directory and run @command{make}.
 
 @example
+cp config.tmph config.h
+$EDITOR config.h
 cp config.tmpmk config.mk
 $EDITOR config.mk
 cp doc/config.tpmi doc/config.texi
