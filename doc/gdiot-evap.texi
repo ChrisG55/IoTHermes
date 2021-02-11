@@ -1,0 +1,46 @@
+\input texinfo @c SPDX-License-Identifier: GPL-3.0-or-later
+@documentencoding UTF-8
+
+@settitle gdiot-evap Documentation
+@titlepage
+@center @titlefont{gdiot-evap Documentation}
+@end titlepage
+
+@ifnottex
+@node Top
+@top gdiot-evap
+
+Chapters in the @command{gdiot-evap} documentation.
+@end ifnottex
+
+@contents
+
+@node Synopsis
+@chapter Synopsis
+
+gdiot-evap
+
+@node Description
+@chapter Description
+@command{gdiot-evap} is a reference implementation of a sink node.
+
+@node Detailed description
+@chapter Detailed description
+In its current form, @command{gdiot-evap} enters the main function and returns with a successful exit status.
+
+@node Options
+@chapter Options
+There are no options for @command{gdiot-evap}.
+
+@node Examples
+@chapter Examples
+
+@command{gdiot-evap} is run as follows:
+
+@example
+gdiot-gate
+@end example
+
+@include authors.texi
+
+@bye

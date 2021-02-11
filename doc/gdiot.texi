@@ -96,6 +96,7 @@ make
 @menu
 * gdiot-src:: source node
 * gdiot-gate:: intermediate node
+* gdiot-evap:: sink node
 @end menu
 
 @node gdiot-src
@@ -113,6 +114,14 @@ make
 @pindex gdiot-gate
 
 @command{gdiot-gate} is a reference implementation for an intermediate node.
+
+@node gdiot-evap
+@section gdiot-evap
+
+@cindex section, gdiot-evap
+@pindex gdiot-evap
+
+@command{gdiot-evap} is a reference implementation for a sink node.
 
 @node Index
 @unnumbered Index
