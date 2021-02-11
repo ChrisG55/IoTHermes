@@ -1,11 +1,12 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 GDIOTPROGS-$(CONFIG_GDIOT_SRC)  += gdiot-src
 GDIOTPROGS-$(CONFIG_GDIOT_GATE) += gdiot-gate
+GDIOTPROGS-$(CONFIG_GDIOT_EVAP) += gdiot-evap
 
 GDIOTPROGS := $(GDIOTPROGS-yes:%=%$(PROGSSUF)$(EXESUF))
 PROGS   += $(GDIOTPROGS)
 
-GDIOTBASENAMES  = gdiot-src gdiot-gate
+GDIOTBASENAMES  = gdiot-src gdiot-gate gdiot-evap
 ALLGDIOTPROGS   = $(GDIOTBASENAMES:%=%$(PROGSSUF)$(EXESUF))
 ALLGDIOTPROGS_G = $(GDIOTBASENAMES:%=%$(PROGSSUF)_g$(EXESUF))
 
@@ -22,7 +23,7 @@ $(foreach P,$(GDIOTPROGS-yes),$(eval $(call DOGDIOTPROG,$(P))))
 
 all: $(GDIOTPROGS)
 
-src/gdiot-src.o src/gdiot-gate.o: | src
+src/gdiot-src.o src/gdiot-gate.o src/gdiot-evap.o: | src
 OUTDIRS += src
 
 ifdef GDIOTPROGS
