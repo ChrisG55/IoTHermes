@@ -1,0 +1,47 @@
+\input texinfo @c SPDX-License-Identifier: GPL-3.0-or-later
+@documentencoding UTF-8
+
+@settitle gdiot-gate Documentation
+@titlepage
+@center @titlefont{gdiot-gate Documentation}
+@end titlepage
+
+@ifnottex
+@node Top
+@top gdiot-gate
+
+Chapters in the @command{gdiot-gate} documentation.
+@end ifnottex
+
+@contents
+
+@node Synopsis
+@chapter Synopsis
+
+gdiot-gate
+
+@node Description
+@chapter Description
+@command{gdiot-gate} is a reference implementation of an intermediate node.
+
+@node Detailed description
+@chapter Detailed description
+In its current form, @command{gdiot-gate} enters the main function and returns with a successful exit status.
+
+@node Options
+@chapter Options
+
+There are no options for @command{gdiot-gate}.
+
+@node Examples
+@chapter Examples
+
+@command{gdiot-gate} is run as follows:
+
+@example
+gdiot-gate
+@end example
+
+@include authors.texi
+
+@bye

@@ -95,6 +95,7 @@ make
 
 @menu
 * gdiot-src:: source node
+* gdiot-gate:: intermediate node
 @end menu
 
 @node gdiot-src
@@ -104,6 +105,14 @@ make
 @pindex gdiot-src
 
 @command{gdiot-src} is a reference implementation for a source node.
+
+@node gdiot-gate
+@section gdiot-gate
+
+@cindex section, gdiot-gate
+@pindex gdiot-gate
+
+@command{gdiot-gate} is a reference implementation for an intermediate node.
 
 @node Index
 @unnumbered Index
