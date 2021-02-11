@@ -31,7 +31,7 @@ In its current form, @command{gdiot-gate} enters the main function and returns w
 @node Options
 @chapter Options
 
-There are no options for @command{gdiot-gate}.
+@include common-opts.texi
 
 @include exit.texi
 
