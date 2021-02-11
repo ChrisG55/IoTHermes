@@ -30,7 +30,8 @@ In its current form, @command{gdiot-evap} enters the main function and returns w
 
 @node Options
 @chapter Options
-There are no options for @command{gdiot-evap}.
+
+@include common-opts.texi
 
 @include exit.texi
 
