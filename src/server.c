@@ -1,5 +1,8 @@
+#include "queue.h"
 #include "server.h"
 
+#include <errno.h>
+#include <stdint.h>
 #include <stdlib.h>
 
 #include "lib/hermes.h"
@@ -7,14 +10,21 @@
 void *server_main(void *c)
 {
 	struct server_context *ctx = c;
-
-	ctx->ret = 0;
+	uint32_t *data;
 
 	ctx->hermes = hermes_init();
 	hermes_connect(ctx->hermes);
 	hermes_send(ctx->hermes, NULL);
 	hermes_disconnect(ctx->hermes);
 	hermes_fini(ctx->hermes);
+
+	if ((data = calloc(1, sizeof(*data))) == NULL) {
+		ctx->ret = errno;
+		return &ctx->ret;
+	}
+	*data = 0xc0ffee00;
+
+	ctx->ret = queue_enq(ctx->queue, data);
 
 	return &ctx->ret;
 }
