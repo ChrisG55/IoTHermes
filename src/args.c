@@ -355,6 +355,10 @@ static int parse_token(const char *token, size_t offset, struct element *e)
 	return 0;
 }
 
+static void init_args(void)
+{
+}
+
 #if HAVE_UNISTD_H && (_XOPEN_VERSION >= 4 || defined(_XOPEN_XPG4) || defined(_XOPEN_XPG3) || defined(_XOPEN_XPG2))
 void parse_args(int argc, char *argv[])
 {
@@ -363,6 +367,8 @@ void parse_args(int argc, char *argv[])
 	int rv;
 	int format_idx = 0;
 	int source_idx = 0;
+
+	init_args();
 
 	opterr = 0;
 	while ((c = getopt(argc, argv, "f:h")) != -1) {
