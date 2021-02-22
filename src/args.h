@@ -9,6 +9,7 @@ struct block_code_config {
 struct config {
 	const char *help_line;
 	struct block_code_config block_code;
+	const char *server;
 };
 
 extern struct config conf;

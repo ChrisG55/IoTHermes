@@ -27,6 +27,7 @@
 #endif /* HAVE_UNISTD_H */
 
 #define DEFAULT_BLKCODE "raw"
+#define DEFAULT_SERVER "localhost"
 
 enum length_modifier {
 	LMOD_NONE,
@@ -365,6 +366,7 @@ static void init_args(void)
 		conf.block_code.type = EMPTY_CODE;
 	else if (strncmp(DEFAULT_BLKCODE, "hamming", 7) == 0)
 		conf.block_code.type = HAMMING_CODE;
+	conf.server = DEFAULT_SERVER;
 }
 
 static int parse_code(const char *code)
@@ -391,7 +393,7 @@ void parse_args(int argc, char *argv[])
 	init_args();
 
 	opterr = 0;
-	while ((c = getopt(argc, argv, "c:f:h")) != -1) {
+	while ((c = getopt(argc, argv, "c:f:hs:")) != -1) {
 		switch (c) {
 		case 'c':
 		{
@@ -407,6 +409,9 @@ void parse_args(int argc, char *argv[])
 		case 'h':
 			rv = usage(argv[0]);
 			gdiot_exit(rv < 0);
+		case 's':
+			conf.server = optarg;
+			break;
 		case ':':
 			if (gdiot_fprintf(stderr,
 					  "Option -%c requires an operand\n",
@@ -438,7 +443,7 @@ int usage(const char *progname)
 	if (conf.help_line != NULL)
 		if ((rv = gdiot_printf("%s\n", conf.help_line)) < 0)
 			return rv;
-	if ((r = gdiot_printf("Usage: %s [-c <code>] [-f <fmt>] [-h]\n", progname)) < 0)
+	if ((r = gdiot_printf("Usage: %s [-c <code>] [-f <fmt>] [-h] [-s <ip>]\n", progname)) < 0)
 		return r;
 	rv += r;
 	if ((r = gdiot_printf("  -c   block code type (default: %s)\n", DEFAULT_BLKCODE)) < 0)
@@ -448,5 +453,8 @@ int usage(const char *progname)
 	rv += r;
 	if ((r = gdiot_puts("  -h   help message")) == EOF)
 		return -1;
+	rv += r;
+	if ((r = gdiot_printf("  -s   IP address of the server (default: %s)\n", DEFAULT_SERVER)) < 0)
+		return r;
 	return rv + r;
 }
