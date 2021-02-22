@@ -10,6 +10,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <libgd/block_code.h>
+
 #if HAVE_GDIOT_SRC
 #include "gdiot-src.h"
 #elif HAVE_GDIOT_GATE
@@ -23,6 +25,8 @@
 #if HAVE_UNISTD_H
 #include <unistd.h>
 #endif /* HAVE_UNISTD_H */
+
+#define DEFAULT_BLKCODE "raw"
 
 enum length_modifier {
 	LMOD_NONE,
@@ -357,6 +361,22 @@ static int parse_token(const char *token, size_t offset, struct element *e)
 
 static void init_args(void)
 {
+	if (strncmp(DEFAULT_BLKCODE, "raw", 3) == 0)
+		conf.block_code.type = EMPTY_CODE;
+	else if (strncmp(DEFAULT_BLKCODE, "hamming", 7) == 0)
+		conf.block_code.type = HAMMING_CODE;
+}
+
+static int parse_code(const char *code)
+{
+	if (strncmp(code, "empty", 5) == 0)
+		return EMPTY_CODE;
+	else if (strncmp(code, "Hamming", 7) == 0)
+		return HAMMING_CODE;
+	/* else if (strncmp(code, "Reed-Solomon", 12) == 0) */
+	/*      return REED_SOLOMON_CODE; */
+	fprintf(stderr, "Invalid block code name '%s'\n", code);
+	return -1;
 }
 
 #if HAVE_UNISTD_H && (_XOPEN_VERSION >= 4 || defined(_XOPEN_XPG4) || defined(_XOPEN_XPG3) || defined(_XOPEN_XPG2))
@@ -371,8 +391,15 @@ void parse_args(int argc, char *argv[])
 	init_args();
 
 	opterr = 0;
-	while ((c = getopt(argc, argv, "f:h")) != -1) {
+	while ((c = getopt(argc, argv, "c:f:h")) != -1) {
 		switch (c) {
+		case 'c':
+		{
+			int ct = conf.block_code.type = parse_code(optarg);
+			if (ct == -1)
+				errflg++;
+			break;
+		}
 		case 'f':
 			if ((rv = parse_format(format_idx++, optarg)) != 0)
 				errflg++;
@@ -411,9 +438,11 @@ int usage(const char *progname)
 	if (conf.help_line != NULL)
 		if ((rv = gdiot_printf("%s\n", conf.help_line)) < 0)
 			return rv;
-	if ((r = gdiot_printf("Usage: %s [-f <fmt>] [-h]\n", progname)) < 0)
+	if ((r = gdiot_printf("Usage: %s [-c <code>] [-f <fmt>] [-h]\n", progname)) < 0)
 		return r;
 	rv += r;
+	if ((r = gdiot_printf("  -c   block code type (default: %s)\n", DEFAULT_BLKCODE)) < 0)
+		return r;
 	if ((r = gdiot_puts("  -f   data format string")) == EOF)
 	     return -1;
 	rv += r;

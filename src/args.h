@@ -2,8 +2,13 @@
 #ifndef ARGS_H
 #define ARGS_H
 
+struct block_code_config {
+	int type;
+};
+
 struct config {
 	const char *help_line;
+	struct block_code_config block_code;
 };
 
 extern struct config conf;
