@@ -2,6 +2,12 @@
 
 . ./config.sh
 
+if test "$shared" = "yes"; then
+    shared=true
+else
+    shared=false
+fi
+
 shortname=$1
 name=lib${shortname}
 fullname=${name}${build_suffix}
@@ -30,11 +36,11 @@ includedir=$incdir
 Name: $fullname
 Description: $comment
 Version: $version
-Requires: $(printf "$requires")
-Requires.private: $(printf "$requires")
+Requires: $($shared || printf "$requires")
+Requires.private: $($shared && printf "$requires")
 Conflicts:
-Libs: -L\${libdir} -l${fullname#lib} $(printf "$libs")
-Libs.private: $(printf "$libs")
+Libs: -L\${libdir} -l${fullname#lib} $($shared || printf "$libs")
+Libs.private: $($shared && printf "$libs")
 Cflags: -I\${includedir}
 EOF
 
@@ -52,6 +58,6 @@ Description: $comment
 Version: $version
 Requires: $requires
 Conflicts:
-Libs: -L\${libdir} -l${fullname#lib} $(printf "$libs")
+Libs: -L\${libdir} -l${fullname#lib} $($shared || printf "$libs")
 Cflags: -I\${includedir}
 EOF

@@ -35,7 +35,7 @@ COMPILE_C = $(call COMPILE,CC)
 %.i: %.c
 	$(CC) $(CFLAGS) $(CC_E) $<
 
-%.c %.h %.pc %.version: TAG = GEN
+%.c %.h %.pc %.ver %.version: TAG = GEN
 
 # Dummy rule to stop make tryping to rebuild removed or renamed headers
 %.h:
@@ -50,9 +50,11 @@ $(OBJS):
 endif
 
 OBJS        += $(OBJS-yes)
+SLIBOBJS    += $(SLIBOBJS-yes)
 GDIOTLIB    := $($(NAME)_GDIOTLIB) $(GDIOTLIB-yes) $(GDIOTLIB)
 
 OBJS        := $(sort $(OBJS:%=$(SUBDIR)%))
+SLIBOBJS    := $(sort $(SLIBOBJS:%=$(SUBDIR)%))
 HEADERS     += $(HEADERS-yes)
 
 PATH_LIBNAME     = $(foreach NAME,$(1),lib/$($(2)LIBNAME))
@@ -62,10 +64,11 @@ LIB_DIR    := $(SRC_PATH)/lib
 ALLHEADERS := $(subst $(LIB_DIR)/,$(SUBDIR),$(wildcard $(LIB_DIR)/*.h))
 
 $(OBJS):     | $(sort $(dir $(OBJS)))
+$(SLIBOBJS): | $(sort $(dir $(SLIBOBJS)))
 
-OUTDIRS := $(OUTDIRS) $(dir $(OBJS))
+OUTDIRS := $(OUTDIRS) $(dir $(OBJS) $(SLIBOBJS))
 
-CLEANSUFFIXES = *.d *.o *.pc *.version *~
-LIBSUFFIXES   = *.a *.so
+CLEANSUFFIXES = *.d *.o *.pc *.ver *.version *~
+LIBSUFFIXES   = *.a *.so *.so.*
 
--include $(wildcard $(OBJS:.o=.d))
+-include $(wildcard $(OBJS:.o=.d) $(SLIBOBJS:.o=.d))

@@ -31,6 +31,7 @@ install: install-progs
 endif
 
 install-progs-yes:
+install-progs-$(CONFIG_SHARED): install-lib
 
 install-progs: install-progs-yes $(GDIOTPROGS)
 	$(Q)mkdir -p "$(BINDIR)"

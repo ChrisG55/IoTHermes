@@ -5,6 +5,7 @@ include config.mk
 vpath %.c    $(SRC_PATH)
 vpath %.h    $(SRC_PATH)
 vpath %.texi $(SRC_PATH)
+vpath %.v    $(SRC_PATH)
 
 # first so "all" becomes default target
 all: all-yes
@@ -18,7 +19,7 @@ config.h: .config
 	@-tput sgr0 2>/dev/null
 
 SUBDIR_VARS := CLEANFILES HOSTPROGS HEADERS \
-               BUILT_HEADERS OBJS HOSTOBJS
+               BUILT_HEADERS OBJS SLIBOBJS HOSTOBJS
 
 define RESET
 $(1) :=
