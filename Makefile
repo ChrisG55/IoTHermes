@@ -7,10 +7,16 @@ vpath %.h    $(SRC_PATH)
 vpath %.texi $(SRC_PATH)
 vpath %.v    $(SRC_PATH)
 
+GDIOTLIB := gdiot
+
 # first so "all" becomes default target
 all: all-yes
 
 include $(SRC_PATH)/tools/common.mk
+
+GDIOT_EXTRALIBS       := $(GDIOTEXTRALIBS)
+GDIOT_DEP_LIBS        := $(DEP_LIBS)
+GDIOT_STATIC_DEP_LIBS := $(STATIC_DEP_LIBS)
 
 config.h: .config
 .config:
@@ -18,7 +24,7 @@ config.h: .config
 	@-printf '\nWARNING: $(?) newer than config.h, rerun configure\n\n'
 	@-tput sgr0 2>/dev/null
 
-SUBDIR_VARS := CLEANFILES HOSTPROGS HEADERS \
+SUBDIR_VARS := CLEANFILES GDIOTLIB HOSTPROGS HEADERS \
                BUILT_HEADERS OBJS SLIBOBJS HOSTOBJS
 
 define RESET
@@ -42,8 +48,8 @@ else
 	$(STRIP) $@
 endif
 
-%$(PROGSSUF)_g$(EXESUF):
-	$(LD) $(LDFLAGS) $(LDEXEFLAGS) $(LD_O) $(OBJS-$*)
+%$(PROGSSUF)_g$(EXESUF): $(GDIOT_DEP_LIBS)
+	$(LD) $(LDFLAGS) $(LDEXEFLAGS) $(LD_O) $(OBJS-$*) $(GDIOT_EXTRALIBS)
 
 VERSION_SH = $(SRC_PATH)/tools/version.sh
 GIT_LOG    = $(SRC_PATH)/.git/logs/HEAD

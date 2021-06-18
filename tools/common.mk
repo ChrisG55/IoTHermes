@@ -53,11 +53,15 @@ OBJS        += $(OBJS-yes)
 SLIBOBJS    += $(SLIBOBJS-yes)
 GDIOTLIB    := $($(NAME)_GDIOTLIB) $(GDIOTLIB-yes) $(GDIOTLIB)
 
+LDLIB           = $(GDIOTLIB:%=%$(BUILDSUF))
+GDIOTEXTRALIBS := $(LDLIB:%=$(LD_LIB)) $(foreach lib,EXTRALIBS-$(NAME) $(GDIOTLIB:%=EXTRALIBS-%),$($(lib))) $(EXTRALIBS)
+
 OBJS        := $(sort $(OBJS:%=$(SUBDIR)%))
 SLIBOBJS    := $(sort $(SLIBOBJS:%=$(SUBDIR)%))
 HEADERS     += $(HEADERS-yes)
 
 PATH_LIBNAME     = $(foreach NAME,$(1),lib/$($(2)LIBNAME))
+DEP_LIBS        := $(foreach lib,$(GDIOTLIB),$(call PATH_LIBNAME,$(lib),$(CONFIG_SHARED:yes=S)))
 STATIC_DEP_LIBS := $(foreach lib,$(GDIOTLIB),$(call PATH_LIBNAME,$(lib)))
 
 LIB_DIR    := $(SRC_PATH)/lib
