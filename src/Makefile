@@ -10,12 +10,8 @@ GDIOTBASENAMES  = gdiot-src gdiot-gate gdiot-evap
 ALLGDIOTPROGS   = $(GDIOTBASENAMES:%=%$(PROGSSUF)$(EXESUF))
 ALLGDIOTPROGS_G = $(GDIOTBASENAMES:%=%$(PROGSSUF)_g$(EXESUF))
 
-OBJS-gdiot-src  += src/args.o src/exit.o src/io.o
-OBJS-gdiot-gate += src/args.o src/exit.o src/io.o
-OBJS-gdiot-evap += src/args.o src/exit.o src/io.o
-
 define DOGDIOTPROG
-OBJS-$(1) += src/$(1).o $(OBJS-$(1)-yes)
+OBJS-$(1) += src/args.o src/exit.o src/io.o src/$(1).o $(OBJS-$(1)-yes)
 $(1)$(PROGSSUF)_g$(EXESUF): $$(OBJS-$(1))
 $$(OBJS-$(1)): | src
 $$(OBJS-$(1)): CFLAGS  += $(CFLAGS-$(1))
