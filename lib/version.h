@@ -1,0 +1,6 @@
+#ifndef GDIOT_VERSION_H
+#define GDIOT_VERSION_H
+
+#define LIBGDIOT_VERSION 1
+
+#endif /* GDIOT_VERSION_H */
