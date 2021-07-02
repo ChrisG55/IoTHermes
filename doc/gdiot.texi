@@ -34,7 +34,7 @@ Chapters in the @acronym{GDIoT} documentation.
 @menu
 * GDIoT Copying Conditions:: What you are allowed to do with this software
 * Introduction:: The idea behind @acronym{GDIoT}
-* Build System:: Description of the build systems and how to used it
+* Build Systems:: Description of the build systems and how to used them
 * Tasks:: An abstraction of threads
 * Library:: Hermes protocol implementation
 * Program:: Programs that come with @acronym{GDIoT}
@@ -69,12 +69,20 @@ along with this program.  If not, see @url{https://www.gnu.org/licenses/}.
 
 @acronym{GDIoT,Generalized Deduplication for @acronym{IoT,Internet of Things}} is a open-source software project that enables generalized deduplication for @acronym{IoT} through the Hermes protocol.
 
-@node Build System
-@chapter Build System
+@node Build Systems
+@chapter Build Systems
 
-@cindex chapter, Build System
+@cindex chapter, Build Systems
 
-The build system is inspired by @emph{ffbuild}.
+For each type of operating system @acronym{GDIoT} should provide a dedicated build system.
+Build and configuration files for these build systems integrate all subsystems in the @acronym{GDIoT} without interfering with any other build systems.
+The project's root directory contains the core files of the build system.
+Each subsystem is handled completely separately by each build system and relations between subsystem exist only through dependencies.
+
+The UNIX build system is inspired by @emph{ffbuild}.
+@pindex gcc
+It uses a POSIX interface to the underlying UNIX operating system and other operating system-specific interfaces for tool such as @command{gcc}.
+
 @pindex configure
 Due to time constraints during the development of the @acronym{GDIoT} project, it lacks a @file{configure} script.
 Instead it provides a configuration template @file{config.tmpmk} that needs to be modified by hand before compiling the project.
