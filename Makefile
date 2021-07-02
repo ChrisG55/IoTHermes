@@ -26,6 +26,9 @@ $(1)-yes :=
 endef
 
 $(foreach V,$(SUBDIR_VARS),$(eval $(call RESET,$(V))))
+SUBDIR := lib/
+include $(SRC_PATH)/lib/Makefile
+include $(SRC_PATH)/tools/library.mk
 
 include $(SRC_PATH)/src/Makefile
 include $(SRC_PATH)/doc/Makefile
@@ -53,6 +56,12 @@ src/gdiotversion.h .version:
 
 # force version.sh to run whenever version might have changed
 -include .version
+
+install: install-lib install-headers
+
+install-lib: install-lib-yes
+
+uninstall: uninstall-headers uninstall-lib
 
 clean::
 	$(RM) $(CLEANSUFFIXES)

@@ -3,6 +3,8 @@ ifndef LIBGDIOT_CONFIG_MK
 LIBGDIOT_CONFIG_MK=1
 LIBGDIOT_CONFIGURATION=
 prefix=/usr/local
+LIBDIR=$(DESTDIR)${prefix}/lib
+INCDIR=$(DESTDIR)${prefix}/include
 BINDIR=$(DESTDIR)${prefix}/bin
 DOCDIR=$(DESTDIR)${prefix}/share/doc/libgdiot
 INFODIR=$(DESTDIR)${prefix}/share/info
@@ -14,6 +16,10 @@ endif
 ARCH=
 CC=gcc
 LD=gcc
+AR=ar
+ARFLAGS=rcD
+AR_O=$@
+RANLIB=ranlib -D
 STRIP=strip
 STRIPTYPE=direct
 CP=cp -p
@@ -23,11 +29,15 @@ CC_C=-c
 CC_E=-E -o $@
 CC_O=-o $@
 LD_O=-o $@
-LDFLAGS= -march=core2 -Wl,--warn-common
+LD_PATH=-L
+LDFLAGS= -march=core2 -Wl,--warn-common -Wl,-rpath-link=:libgdiot
 LDEXEFLAGS=
 BUILDSUF=
 PROGSSUF=
 FULLNAME=$(NAME)$(BUILDSUF)
+LIBPREF=lib
+LIBSUF=.a
+LIBNAME=$(LIBPREF)$(FULLNAME)$(LIBSUF)
 EXESUF=
 EXTRA_VERSION=
 CCDEP=
@@ -38,6 +48,7 @@ CFLAGS-gdiot-evap=-D_POSIX_SOURCE
 LDFLAGS-gdiot-src=
 LDFLAGS-gdiot-gate=
 LDFLAGS-gdiot-evap=
+LIB_INSTALL_EXTRA_CMD=$$(RANLIB) "$(LIBDIR)/$(LIBNAME)"
 INSTALL=install
 VERSION_SCRIPT_POSTPROCESS_CMD=cat
 gdiot_GDIOTLIB=
@@ -52,4 +63,6 @@ CONFIG_GDIOT_EVAP=yes
 CONFIG_HTMLPAGES=yes
 CONFIG_INFOPAGES=yes
 CONFIG_TXTPAGES=yes
+!CONFIG_SHARED=yes
+CONFIG_STATIC=yes
 endif # LIBGDIOT_CONFIG_MAK

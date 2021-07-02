@@ -85,6 +85,8 @@ cp config.tmph config.h
 $EDITOR config.h
 cp config.tmpmk config.mk
 $EDITOR config.mk
+cp config.tmpsh config.sh
+$EDITOR config.sh
 cp doc/config.tpmi doc/config.texi
 $EDITOR doc/config.texi
 make

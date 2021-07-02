@@ -10,11 +10,14 @@ Q     = @
 ECHO  = printf "$(1)\t%s\n" $(2)
 
 M     = @$(call ECHO,$(TAG),$@);
+$(eval INSTALL = @$(call ECHO,INSTALL,$$(^:$(LIB_DIR)/%=%)); $(INSTALL))
 endif
 
 IFLAGS   := -I. -I$(SRC_LINK)/
 CPPFLAGS := $(IFLAGS) $(CPPFLAGS)
 CCFLAGS   = $(CPPFLAGS) $(CFLAGS)
+
+LDFLAGS  := $(LD_PATH)lib $(LDFLAGS)
 
 define COMPILE
 	$(call $(1)DEP,$(1))
@@ -47,14 +50,22 @@ $(OBJS):
 endif
 
 OBJS        += $(OBJS-yes)
+GDIOTLIB    := $($(NAME)_GDIOTLIB) $(GDIOTLIB-yes) $(GDIOTLIB)
 
 OBJS        := $(sort $(OBJS:%=$(SUBDIR)%))
 HEADERS     += $(HEADERS-yes)
+
+PATH_LIBNAME     = $(foreach NAME,$(1),lib/$($(2)LIBNAME))
+STATIC_DEP_LIBS := $(foreach lib,$(GDIOTLIB),$(call PATH_LIBNAME,$(lib)))
+
+LIB_DIR    := $(SRC_PATH)/lib
+ALLHEADERS := $(subst $(LIB_DIR)/,$(SUBDIR),$(wildcard $(LIB_DIR)/*.h))
 
 $(OBJS):     | $(sort $(dir $(OBJS)))
 
 OUTDIRS := $(OUTDIRS) $(dir $(OBJS))
 
 CLEANSUFFIXES = *.d *.o *.version *~
+LIBSUFFIXES   = *.a *.so
 
 -include $(wildcard $(OBJS:.o=.d))

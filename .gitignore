@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
+*.a
 *.d
 *.html
 *.info
@@ -8,6 +9,7 @@
 config.*
 !config.tmph
 !config.tmpmk
+!config.tmpsh
 !doc/config.tmpi
 gdiot-*
 !gdiot-*.c
