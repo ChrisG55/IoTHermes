@@ -35,8 +35,10 @@ Chapters in the @acronym{GDIoT} documentation.
 * GDIoT Copying Conditions:: What you are allowed to do with this software
 * Introduction:: The idea behind @acronym{GDIoT}
 * Build System:: Description of the build systems and how to used it
+* Library:: Hermes protocol implementation
 * Program:: Programs that come with @acronym{GDIoT}
 * Index:: An index of concepts
+* Function Index:: An index of all library functions
 * Program Index:: An index of all involved programs
 @end menu
 
@@ -88,6 +90,13 @@ $EDITOR doc/config.texi
 make
 @end example
 
+@node Library
+@chapter Library
+
+@cindex chapter, Library
+
+@include hermes.texi
+
 @node Program
 @chapter Program
 
@@ -129,6 +138,11 @@ make
 @unnumbered Index
 
 @printindex cp
+
+@node Function Index
+@unnumbered Function Index
+
+@printindex fn
 
 @node Program Index
 @unnumbered Program Index

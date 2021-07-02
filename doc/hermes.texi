@@ -1,0 +1,41 @@
+@menu
+* Introducing Hermes:: Overview of the Hermes protocol
+* Interface:: Hermes protocol function interface
+@end menu
+
+@node Introducing Hermes
+@section Introducing Hermes
+
+@cindex section, Introducing Hermes
+
+Hermes is an application layer protocol for @acronym{IoT}.
+It is capable to reduce @acronym{IoT} network traffic by exploiting a novel concept based on generalized deduplication.
+
+@node Interface
+@section Interface
+
+@cindex section, Interface
+
+The Hermes library interface provides a basic set of functions for nodes to interact with each other.
+
+@itemize @bullet
+@item
+@code{hermes_connect}: connect a node to the Hermes network
+
+@item
+@code{hermes_disconnect}: disconnect a node from the Hermes network
+
+@item
+@code{hermes_fini}: free all resources used in the Hermes context
+
+@item
+@code{hermes_init}: initialize a Hermes context
+
+@item
+@code{hermes_send}: send a message to the Hermes network
+@end itemize
+@findex hermes_connect
+@findex hermes_disconnect
+@findex hermes_fini
+@findex hermes_init
+@findex hermes_send
