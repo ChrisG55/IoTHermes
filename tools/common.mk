@@ -35,7 +35,7 @@ COMPILE_C = $(call COMPILE,CC)
 %.i: %.c
 	$(CC) $(CFLAGS) $(CC_E) $<
 
-%.c %.h %.version: TAG = GEN
+%.c %.h %.pc %.version: TAG = GEN
 
 # Dummy rule to stop make tryping to rebuild removed or renamed headers
 %.h:
@@ -65,7 +65,7 @@ $(OBJS):     | $(sort $(dir $(OBJS)))
 
 OUTDIRS := $(OUTDIRS) $(dir $(OBJS))
 
-CLEANSUFFIXES = *.d *.o *.version *~
+CLEANSUFFIXES = *.d *.o *.pc *.version *~
 LIBSUFFIXES   = *.a *.so
 
 -include $(wildcard $(OBJS:.o=.d))

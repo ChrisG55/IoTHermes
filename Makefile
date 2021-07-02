@@ -61,7 +61,7 @@ install: install-lib install-headers
 
 install-lib: install-lib-yes
 
-uninstall: uninstall-headers uninstall-lib
+uninstall: uninstall-headers uninstall-lib uninstall-pkgconfig
 
 clean::
 	$(RM) $(CLEANSUFFIXES)
@@ -69,6 +69,7 @@ clean::
 distclean:: clean
 	$(RM) .version .config config.* \
 		src/gdiotversion.h
+	$(RM) -rf doc/examples/pc-uninstalled
 ifeq ($(SRC_LINK),src)
 	$(RM) src
 endif

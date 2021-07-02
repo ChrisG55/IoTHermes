@@ -8,6 +8,7 @@ INCDIR=$(DESTDIR)${prefix}/include
 BINDIR=$(DESTDIR)${prefix}/bin
 DOCDIR=$(DESTDIR)${prefix}/share/doc/libgdiot
 INFODIR=$(DESTDIR)${prefix}/share/info
+PKGCONFIGDIR=$(DESTDIR)${prefix}/lib/pkgconfig
 SRC_PATH=.
 SRC_LINK=.
 ifndef MAIN_MAKEFILE

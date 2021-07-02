@@ -4,6 +4,7 @@
 *.html
 *.info
 *.o
+*.pc
 *.txt
 *.version
 config.*
