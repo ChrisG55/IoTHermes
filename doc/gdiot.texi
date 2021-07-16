@@ -35,6 +35,7 @@ Chapters in the @acronym{GDIoT} documentation.
 * GDIoT Copying Conditions:: What you are allowed to do with this software
 * Introduction:: The idea behind @acronym{GDIoT}
 * Build System:: Description of the build systems and how to used it
+* Tasks:: An abstraction of threads
 * Library:: Hermes protocol implementation
 * Program:: Programs that come with @acronym{GDIoT}
 * Index:: An index of concepts
@@ -91,6 +92,39 @@ cp doc/config.tpmi doc/config.texi
 $EDITOR doc/config.texi
 make
 @end example
+
+@node Tasks
+@chapter Tasks
+
+@cindex chapter, Tasks
+
+Tasks are an abstraction of threads in @acronym{GDIoT}.
+Depending on the operating system there are different thread implementations.
+The task abstraction layer unifies these different thread interfaces transparently into a single common interface.
+
+@node Task Interface
+@section Interface
+
+@cindex section, Interface (Task)
+
+@table @code
+@item int task_create(void *(*func)(void *ctx), task_t *task, void *ctx)
+The @code{task_create} function creates a new task and returns an index in @code{task} to identify the newly created task.
+The task also requires a function @code{func} to execute as well as a context @code{ctx} in order to do some useful work.
+Upon successful completion the function call will return @code{0}, otherwise @code{1} is returned and an error code will be set.
+@item int task_free(task_t task)
+The @code{task_free} function frees up any resources allocated for the task @code{task}.
+This function has to be called once the task has finished executing.
+Upon successful completion the function returns @code{0}, otherwise @code{1} is returned.
+@item int task_join(task_t task, void **ret_ptr)
+The @code{task_join} function blocks until it has joined with the specified task @code{task}, i.e., the task has finished executing.
+If @code{ret_ptr} is not @code{NULL}, then it will contain the task's return value.
+Upon successful completion the function returns @code{0}, otherwise a non zero value is returned indicating the error.
+@item int task_multijoin(int n, task_t *tasks, void **ret_ptrs, size_t ret_sz)
+The @code{task_multijoin} function blocks until it has joined with exactly @code{n} tasks in @code{tasks}.
+If @code{ret_ptrs} is not @code{NULL} and @code{ret_sz} has a positive non zero value, then it will contain the return values of the @code{n} tasks.
+Upon successful completion the function returns @code{0}, otherwise a non zero value is returned indicating the error.
+@end table
 
 @node Library
 @chapter Library
