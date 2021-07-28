@@ -1,0 +1,288 @@
+@node Exit status
+@chapter Exit status
+
+The following table describes the meaning of the exit status for @acronym{GDIoT} programs.
+
+@table @code
+@item 0
+Successful termination
+@item 1
+General error during execution
+@item 3
+Mathematical argument out of domain of function
+@item 4
+Illegal byte sequence
+@item 5
+Mathematical result not representable
+@include config.texi
+@ifset have-unistd-h
+@item 6
+Maximum retries for unavailable resource exceeded
+@item 7
+Bad file descriptor
+@item 8
+File too large
+@item 9
+Maximum retires for interrupted function exceeded
+@item 10
+Invalid argument
+@item 11
+I/O error
+@item 12
+Not enough memory
+@item 13
+No space left on device
+@item 14
+No such device or address
+@item 15
+Broken pipe
+@end ifset
+@ifset sig129
+@item 129
+@value{sig129}
+@end ifset
+@ifset sig130
+@item 130
+@value{sig130}
+@end ifset
+@ifset sig131
+@item 131
+@value{sig131}
+@end ifset
+@ifset sig132
+@item 132
+@value{sig132}
+@end ifset
+@ifset sig133
+@item 133
+@value{sig133}
+@end ifset
+@ifset sig134
+@item 134
+@value{sig134}
+@end ifset
+@ifset sig135
+@item 135
+@value{sig135}
+@end ifset
+@ifset sig136
+@item 136
+@value{sig136}
+@end ifset
+@ifset sig137
+@item 137
+@value{sig137}
+@end ifset
+@ifset sig138
+@item 138
+@value{sig138}
+@end ifset
+@ifset sig139
+@item 139
+@value{sig139}
+@end ifset
+@ifset sig140
+@item 140
+@value{sig140}
+@end ifset
+@ifset sig141
+@item 141
+@value{sig141}
+@end ifset
+@ifset sig142
+@item 142
+@value{sig142}
+@end ifset
+@ifset sig143
+@item 143
+@value{sig143}
+@end ifset
+@ifset sig144
+@item 144
+@value{sig144}
+@end ifset
+@ifset sig145
+@item 145
+@value{sig145}
+@end ifset
+@ifset sig146
+@item 146
+@value{sig146}
+@end ifset
+@ifset sig147
+@item 147
+@value{sig147}
+@end ifset
+@ifset sig148
+@item 148
+@value{sig148}
+@end ifset
+@ifset sig149
+@item 149
+@value{sig149}
+@end ifset
+@ifset sig150
+@item 150
+@value{sig150}
+@end ifset
+@ifset sig151
+@item 151
+@value{sig151}
+@end ifset
+@ifset sig152
+@item 152
+@value{sig152}
+@end ifset
+@ifset sig153
+@item 153
+@value{sig153}
+@end ifset
+@ifset sig154
+@item 154
+@value{sig154}
+@end ifset
+@ifset sig155
+@item 155
+@value{sig155}
+@end ifset
+@ifset sig156
+@item 156
+@value{sig156}
+@end ifset
+@ifset sig157
+@item 157
+@value{sig157}
+@end ifset
+@ifset sig158
+@item 158
+@value{sig158}
+@end ifset
+@ifset sig159
+@item 159
+@value{sig159}
+@end ifset
+@ifset sig160
+@item 160
+@value{sig160}
+@end ifset
+@ifset sig161
+@item 161
+@value{sig161}
+@end ifset
+@ifset sig162
+@item 162
+@value{sig162}
+@end ifset
+@ifset sig163
+@item 163
+@value{sig163}
+@end ifset
+@ifset sig164
+@item 164
+@value{sig164}
+@end ifset
+@ifset sig165
+@item 165
+@value{sig165}
+@end ifset
+@ifset sig166
+@item 166
+@value{sig166}
+@end ifset
+@ifset sig167
+@item 167
+@value{sig167}
+@end ifset
+@ifset sig168
+@item 168
+@value{sig168}
+@end ifset
+@ifset sig169
+@item 169
+@value{sig169}
+@end ifset
+@ifset sig170
+@item 170
+@value{sig170}
+@end ifset
+@ifset sig171
+@item 171
+@value{sig171}
+@end ifset
+@ifset sig172
+@item 172
+@value{sig172}
+@end ifset
+@ifset sig173
+@item 173
+@value{sig173}
+@end ifset
+@ifset sig174
+@item 174
+@value{sig174}
+@end ifset
+@ifset sig175
+@item 175
+@value{sig175}
+@end ifset
+@ifset sig176
+@item 176
+@value{sig176}
+@end ifset
+@ifset sig177
+@item 177
+@value{sig177}
+@end ifset
+@ifset sig178
+@item 178
+@value{sig178}
+@end ifset
+@ifset sig179
+@item 179
+@value{sig179}
+@end ifset
+@ifset sig180
+@item 180
+@value{sig180}
+@end ifset
+@ifset sig181
+@item 181
+@value{sig181}
+@end ifset
+@ifset sig182
+@item 182
+@value{sig182}
+@end ifset
+@ifset sig183
+@item 183
+@value{sig183}
+@end ifset
+@ifset sig184
+@item 184
+@value{sig184}
+@end ifset
+@ifset sig185
+@item 185
+@value{sig185}
+@end ifset
+@ifset sig186
+@item 186
+@value{sig186}
+@end ifset
+@ifset sig187
+@item 187
+@value{sig187}
+@end ifset
+@ifset sig188
+@item 188
+@value{sig188}
+@end ifset
+@ifset sig189
+@item 189
+@value{sig189}
+@end ifset
+@ifset sig190
+@item 190
+@value{sig190}
+@end ifset
+@end table
