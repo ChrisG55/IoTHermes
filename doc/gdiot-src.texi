@@ -33,6 +33,8 @@ In its current form, @command{gdiot-src} enters the main function and returns wi
 
 There are no options for @command{gdiot-src}.
 
+@include exit.texi
+
 @node Examples
 @chapter Examples
 
