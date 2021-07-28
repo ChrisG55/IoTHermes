@@ -1,6 +1,8 @@
 #ifndef EXIT_H
 #define EXIT_H
 
+#include <stdnoreturn.h>
+
 int errno2exit(void);
 
 /*
@@ -9,6 +11,6 @@ int errno2exit(void);
  * function will indicate an error in the exit status based on the value of
  * errno.
  */
-void gdiot_exit(int status);
+_Noreturn void gdiot_exit(int status);
 
 #endif /* EXIT_H */
