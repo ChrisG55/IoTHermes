@@ -2,5 +2,6 @@
 #ifndef GDIOT_CONFIG_H
 #define GDIOT_CONFIG_H
 #define HAVE_PTHREADS 1
+#define HAVE_SCHED_H 1
 #define HAVE_UNISTD_H 1
 #endif /* GDIOT_CONFIG_H */

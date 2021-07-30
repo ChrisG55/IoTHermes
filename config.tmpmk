@@ -70,6 +70,7 @@ EXTRALIBS-gdiot=
 EXTRALIBS-gdiot-src=-lpthread
 EXTRALIBS-gdiot-gate=
 EXTRALIBS-gdiot-evap=
+HAVE_SCHED_H=yes
 HAVE_UNISTD_H=yes
 HAVE_PTHREADS=yes
 HAVE_MAKEINFO=yes
