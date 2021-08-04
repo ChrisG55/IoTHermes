@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
 	srand(time(NULL));
 #endif /* HAVE_UNISTD_H && (_DEFAULT_SOURCE || _XOPEN_SOURCE) */
 
-	ctx = hermes_init(0);
+	ctx = hermes_init(0, 0);
 	hermes_connect(ctx);
 	hermes_send(ctx, NULL);
 	hermes_disconnect(ctx);

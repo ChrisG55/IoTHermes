@@ -31,7 +31,7 @@ void *client_main(void *c)
 	printf("client: data = 0x%"PRIx32"\n", *data);
 	free(data);
 
-	if ((ctx->hermes = hermes_init(0)) == NULL) {
+	if ((ctx->hermes = hermes_init(0, 0)) == NULL) {
 		ctx->ret = errno;
 		return &ctx->ret;
 	}

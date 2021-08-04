@@ -12,7 +12,7 @@ void *server_main(void *c)
 	struct server_context *ctx = c;
 	uint32_t *data;
 
-	if ((ctx->hermes = hermes_init(0)) == NULL) {
+	if ((ctx->hermes = hermes_init(0, 0)) == NULL) {
 		ctx->ret = errno;
 		return &ctx->ret;
 	}
