@@ -2,6 +2,7 @@
 #include "config.h"
 #include "queue.h"
 
+#include <errno.h>
 #include <inttypes.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -30,7 +31,10 @@ void *client_main(void *c)
 	printf("client: data = 0x%"PRIx32"\n", *data);
 	free(data);
 
-	ctx->hermes = hermes_init();
+	if ((ctx->hermes = hermes_init(0)) == NULL) {
+		ctx->ret = errno;
+		return &ctx->ret;
+	}
 	hermes_connect(ctx->hermes);
 	hermes_send(ctx->hermes, NULL);
 	hermes_disconnect(ctx->hermes);

@@ -8,7 +8,7 @@ struct hermes_context {
 void hermes_connect(struct hermes_context *ctx);
 void hermes_disconnect(struct hermes_context *ctx);
 void hermes_fini(struct hermes_context *ctx);
-struct hermes_context *hermes_init(void);
+struct hermes_context *hermes_init(unsigned long id);
 void hermes_send(struct hermes_context *ctx, void *data);
 
 #endif /* HERMES_H */
