@@ -29,7 +29,13 @@ The Hermes library interface provides a basic set of functions for nodes to inte
 @code{hermes_fini}: free all resources used in the Hermes context
 
 @item
-@code{hermes_init}: initialize a Hermes context
+@code{struct hermes_context *hermes_init(unsigned long id)}
+
+Initialize a Hermes context
+
+The function allocates memory for a Hermes context.
+If the stream identification @code{id} is @code{0}, the function will generate a random stream identification, otherwise, the function will assign the stream identification to the Hermes context.
+The function returns a pointer to a Hermes context if successful, otherwise, a @code{NULL} pointer is returned and @code{errno} is set to indicate the error.
 
 @item
 @code{hermes_send}: send a message to the Hermes network
