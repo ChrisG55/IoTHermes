@@ -26,7 +26,12 @@ The Hermes library interface provides a basic set of functions for nodes to inte
 @code{hermes_disconnect}: disconnect a node from the Hermes network
 
 @item
-@code{hermes_fini}: free all resources used in the Hermes context
+@code{void hermes_fini(struct hermes_context *ctx)}
+
+Free all resources used in the Hermes context
+
+The function frees all resources allocated and used by the Hermes context @code{ctx}.
+Using the Hermes context @code{ctx} after calling this function results in undefined behavior.
 
 @item
 @code{struct hermes_context *hermes_init(unsigned long id, size_t s)}
