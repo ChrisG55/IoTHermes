@@ -29,12 +29,14 @@ The Hermes library interface provides a basic set of functions for nodes to inte
 @code{hermes_fini}: free all resources used in the Hermes context
 
 @item
-@code{struct hermes_context *hermes_init(unsigned long id)}
+@code{struct hermes_context *hermes_init(unsigned long id, size_t s)}
 
 Initialize a Hermes context
 
 The function allocates memory for a Hermes context.
 If the stream identification @code{id} is @code{0}, the function will generate a random stream identification, otherwise, the function will assign the stream identification to the Hermes context.
+If the stream identification size @code{s} is @code{0}, the random stream identification will have a @code{HERMES_DEFAULT_STREAM_ID_SIZE} size, otherwise the size of the stream identification will be truncated to @code{s}.
+Is the stream identification size @code{s} greater than @code{sizeof(unsigned long)} it will be ignored.
 The function returns a pointer to a Hermes context if successful, otherwise, a @code{NULL} pointer is returned and @code{errno} is set to indicate the error.
 
 @item
