@@ -59,7 +59,7 @@ void hermes_disconnect(struct hermes_context *ctx)
 
 void hermes_fini(struct hermes_context *ctx)
 {
-
+	free(ctx);
 }
 
 struct hermes_context *hermes_init(unsigned long id, size_t s)
