@@ -1,4 +1,5 @@
 #include "queue.h"
+#include "queue_data.h"
 #include "server.h"
 
 #include <errno.h>
@@ -27,7 +28,7 @@ void *server_main(void *c)
 	}
 	*data = 0xc0ffee00;
 
-	ctx->ret = queue_enq(ctx->queue, data, 0, NULL);
+	ctx->ret = queue_enq(ctx->queue, data, CLIENT_MESSAGE_DATA, NULL);
 
 	return &ctx->ret;
 }

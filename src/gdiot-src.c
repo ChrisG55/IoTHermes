@@ -8,6 +8,7 @@
 #include "exit.h"
 #include "io.h"
 #include "queue.h"
+#include "queue_data.h"
 #include "task.h"
 
 #include <errno.h>
@@ -47,7 +48,8 @@ int main(int argc, char *argv[])
 	if ((data = calloc(1, sizeof(*data))) == NULL)
 		return errno2exit();
 	*data = 0xc0ffee00;
-	if (queue_enq(&cctx.source_queue, data, 0, NULL) != 0) {
+	rc = queue_enq(&cctx.source_queue, data, CLIENT_MESSAGE_DATA, NULL);
+	if (rc != 0) {
 		free(data);
 		return errno2exit();
 	}

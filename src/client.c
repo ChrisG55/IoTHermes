@@ -1,6 +1,7 @@
 #include "client.h"
 #include "config.h"
 #include "queue.h"
+#include "queue_data.h"
 
 #include <errno.h>
 #include <inttypes.h>
@@ -28,9 +29,16 @@ void *client_main(void *c)
 #endif /* HAVE_SCHED_H */
 		data = queue_deq(&ctx->source_queue, &type, NULL);
 	} while (data == NULL);
+	switch (type) {
+	case CLIENT_MESSAGE_DATA:
+		printf("client: data = 0x%"PRIx32"\n", *data);
+		free(data);
+		break;
+	default:
+		ctx->ret = EINVAL;
+		return &ctx->ret;
+	}
 	/* hermes_create_msg(); */
-	printf("client: data = 0x%"PRIx32"\n", *data);
-	free(data);
 
 	if ((ctx->hermes = hermes_init(0, 0)) == NULL) {
 		ctx->ret = errno;
