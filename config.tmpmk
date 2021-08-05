@@ -70,6 +70,7 @@ EXTRALIBS-gdiot=
 EXTRALIBS-gdiot-src=-lpthread
 EXTRALIBS-gdiot-gate=-lpthread
 EXTRALIBS-gdiot-evap=
+HAVE_NETDB_H=yes
 HAVE_SCHED_H=yes
 HAVE_UNISTD_H=yes
 HAVE_PTHREADS=yes
