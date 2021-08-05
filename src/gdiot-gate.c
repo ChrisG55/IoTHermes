@@ -31,6 +31,7 @@ int main(int argc, char *argv[])
 	struct server_context sctx;
 	struct queue queue;
 	uint32_t *data;
+	unsigned char type;
 
 	conf.help_line = help_line;
 
@@ -55,7 +56,7 @@ int main(int argc, char *argv[])
 #if HAVE_SCHED_H
 		sched_yield();
 #endif /* HAVE_SCHED_H */
-		data = queue_deq(&queue);
+		data = queue_deq(&queue, &type);
 	} while (data == NULL);
 	gdiot_printf("server: data = 0x%"PRIx32"\n", *data);
 	free(data);

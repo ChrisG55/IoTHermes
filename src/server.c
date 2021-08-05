@@ -27,7 +27,7 @@ void *server_main(void *c)
 	}
 	*data = 0xc0ffee00;
 
-	ctx->ret = queue_enq(ctx->queue, data);
+	ctx->ret = queue_enq(ctx->queue, data, 0);
 
 	return &ctx->ret;
 }

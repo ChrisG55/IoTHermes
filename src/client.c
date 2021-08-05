@@ -18,6 +18,7 @@ void *client_main(void *c)
 {
 	struct client_context *ctx = c;
 	uint32_t *data;
+	unsigned char type;
 
 	ctx->ret = 0;
 
@@ -25,7 +26,7 @@ void *client_main(void *c)
 #if HAVE_SCHED_H
 		sched_yield();
 #endif /* HAVE_SCHED_H */
-		data = queue_deq(&ctx->source_queue);
+		data = queue_deq(&ctx->source_queue, &type);
 	} while (data == NULL);
 	/* hermes_create_msg(); */
 	printf("client: data = 0x%"PRIx32"\n", *data);

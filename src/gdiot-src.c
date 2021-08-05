@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 	if ((data = calloc(1, sizeof(*data))) == NULL)
 		return errno2exit();
 	*data = 0xc0ffee00;
-	if (queue_enq(&cctx.source_queue, data) != 0) {
+	if (queue_enq(&cctx.source_queue, data, 0) != 0) {
 		free(data);
 		return errno2exit();
 	}
