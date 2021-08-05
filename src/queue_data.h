@@ -2,6 +2,7 @@
 #define QUEUE_DATA_H
 
 enum queue_data {
+	CLIENT_MESSAGE_DATA,
 	CLIENT_MESSAGE_RESPONSE,
 };
 
