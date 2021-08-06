@@ -3,6 +3,10 @@
 
 #include <stddef.h>
 
+#define HERMES_SERVER_PORT_LEN 6
+#define HERMES_SERVER_PORT_MIN 49152U
+#define HERMES_SERVER_PORT_MAX 65535U
+
 #define HERMES_DEFAULT_STREAM_ID_SIZE 1
 
 struct hermes_context {
