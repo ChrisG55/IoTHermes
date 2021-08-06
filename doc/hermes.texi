@@ -26,19 +26,23 @@ The Hermes library interface provides a basic set of functions for nodes to inte
 @code{hermes_disconnect}: disconnect a node from the Hermes network
 
 @item
-@code{void hermes_fini(struct hermes_context *ctx)}
+@code{int hermes_fini(struct hermes_context *ctx)}
 
 Free all resources used in the Hermes context
 
 The function frees all resources allocated and used by the Hermes context @code{ctx}.
+Upon successful completion the function returns 0, otherwise, the function returns -1 and sets errno to indicate the error.
 Using the Hermes context @code{ctx} after calling this function results in undefined behavior.
 
 @item
-@code{struct hermes_context *hermes_init(unsigned long id, size_t s)}
+@code{struct hermes_context *hermes_init(const struct addrinfo *hints, const char *nodename, unsigned long id, size_t s, int type)}
 
 Initialize a Hermes context
 
 The function allocates memory for a Hermes context.
+The @code{type} indicates whether a name has to be bound to the socket for a @code{HERMES_SERVER}, or if the socket will be used by a @code{HERMES_CLIENT}.
+The @code{hints} structure provides additional parameters for the socket to create as well as the @code{nodename} to which a client connects or a server is bound to.
+In case of a server, the @code{nodename} can be set to @code{NULL}.
 If the stream identification @code{id} is @code{0}, the function will generate a random stream identification, otherwise, the function will assign the stream identification to the Hermes context.
 If the stream identification size @code{s} is @code{0}, the random stream identification will have a @code{HERMES_DEFAULT_STREAM_ID_SIZE} size, otherwise the size of the stream identification will be truncated to @code{s}.
 Is the stream identification size @code{s} greater than @code{sizeof(unsigned long)} it will be ignored.
