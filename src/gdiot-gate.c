@@ -15,17 +15,51 @@
 #include <errno.h>
 #include <inttypes.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+
+#if HAVE_NETDB_H
+#include <netdb.h>
+#else
+#error "system does not support addrinfo structure"
+#endif /* HAVE_NETDB_H */
 
 #if HAVE_SCHED_H
 #include <sched.h>
 #endif /* HAVE_SCHED_H */
 
+#if HAVE_SYS_SOCKET_H
+#include <sys/socket.h>
+#else
+#error "system does not support socket"
+#endif /* HAVE_SYS_SOCKET_H */
+
+static unsigned int port_next = HERMES_SERVER_PORT_MIN;
 static const char *help_line = "GDIoT intermediate node reference implementation";
 
 struct source_context *sctx = NULL;
 int nb_sources = 0;
+
+/*
+ * Return a string representation of the next port number.
+ * Upon successful completion returns a pointer to a string representing the
+ * next port number, otherwise, a NULL pointer is returned and errno is set to
+ * indicate the error.
+ */
+static char *get_next_port(void)
+{
+	char *buf;
+
+	if ((buf = calloc(HERMES_SERVER_PORT_LEN, sizeof(*buf))) == NULL)
+		return buf;
+
+	snprintf(buf, HERMES_SERVER_PORT_LEN, "%hu", port_next++);
+	if (port_next == 0)
+		port_next = HERMES_SERVER_PORT_MIN;
+
+	return buf;
+}
 
 int main(int argc, char *argv[])
 {
@@ -48,9 +82,18 @@ int main(int argc, char *argv[])
 	srand(time(NULL));
 #endif /* HAVE_UNISTD_H && (_DEFAULT_SOURCE || _XOPEN_SOURCE) */
 
+	if ((sctx.port = get_next_port()) == NULL)
+		return errno2exit();
+
 	sctx.queue = &queue;
 	if ((rc = queue_init(&queue)) != 0)
 		return errno2exit();
+
+	sctx.hints.ai_family = AF_UNSPEC;
+	sctx.hints.ai_socktype = SOCK_STREAM;
+	sctx.hints.ai_flags = AI_PASSIVE;
+	sctx.hints.ai_protocol = 0;
+	sctx.nodename = NULL;
 
 	if ((rc = task_create(server_main, &server, (void *)&sctx)) != 0) {
 		errno = rc;

@@ -24,9 +24,21 @@
 #include <fcntl.h>
 #endif /* HAVE_FCNTL_H */
 
+#if HAVE_NETDB_H
+#include <netdb.h>
+#else
+#error "system does not support addrinfo structure"
+#endif /* HAVE_NETDB_H */
+
 #if HAVE_SCHED_H
 #include <sched.h>
 #endif /* HAVE_SCHED_H */
+
+#if HAVE_SYS_SOCKET_H
+#include <sys/socket.h>
+#else
+#error "system does not support socket"
+#endif /* HAVE_SYS_SOCKET_H */
 
 #if HAVE_SYS_STAT_H
 #include <sys/stat.h>
@@ -62,6 +74,12 @@ int main(int argc, char *argv[])
 
 	if ((rc = queue_init(&cctx.source_queue)) != 0)
 		return errno2exit();
+
+	cctx.hints.ai_family = AF_UNSPEC;
+	cctx.hints.ai_socktype = SOCK_STREAM;
+	cctx.hints.ai_flags = 0;
+	cctx.hints.ai_protocol = 0;
+	cctx.nodename = NULL;
 
 	if ((rc = task_create(client_main, &client, (void *)&cctx)) != 0) {
 		errno = rc;

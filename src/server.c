@@ -31,14 +31,19 @@ void *server_main(void *c)
 	if ((ctx->ret = server_init(ctx)) != 0)
 		return &ctx->ret;
 
-	if ((ctx->hermes = hermes_init(0, 0)) == NULL) {
+	ctx->hermes = hermes_init(&ctx->hints, ctx->nodename, ctx->port, 0, 0,
+				  HERMES_SERVER);
+	if (ctx->hermes == NULL) {
 		ctx->ret = errno;
 		return &ctx->ret;
 	}
 	hermes_connect(ctx->hermes);
 	hermes_send(ctx->hermes, NULL);
 	hermes_disconnect(ctx->hermes);
-	hermes_fini(ctx->hermes);
+	if (hermes_fini(ctx->hermes) == -1) {
+		ctx->ret = errno;
+		return &ctx->ret;
+	}
 
 	if ((data = calloc(1, sizeof(*data))) == NULL) {
 		ctx->ret = errno;

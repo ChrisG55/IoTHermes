@@ -100,7 +100,9 @@ static int message_init(hash_t *registry, void *msg, struct node *qnode)
 		rc = 1;
 		goto init_response;
 	}
-	if ((sctx->hctx = hermes_init(0, 0)) == NULL) {
+	sctx->hctx = hermes_init(&cmi->hints, cmi->nodename, cmi->port, 0, 0,
+				 HERMES_CLIENT);
+	if (sctx->hctx == NULL) {
 		rc = 1;
 		goto init_response;
 	}
@@ -173,7 +175,12 @@ void *client_main(void *c)
 	hermes_connect(hctx);
 	hermes_send(hctx, NULL);
 	hermes_disconnect(hctx);
-	hermes_fini(hctx);
+	/* NOTE: comment for now, uncomment once CLIENT_MESSAGE_FINI is
+	   implemented */
+	/* if (hermes_fini(hctx) == -1) { */
+	/* 	ctx->ret = errno; */
+	/* 	return &ctx->ret; */
+	/* } */
 
 	return &ctx->ret;
 }
