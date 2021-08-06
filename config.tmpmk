@@ -72,6 +72,7 @@ EXTRALIBS-gdiot-gate=-lpthread
 EXTRALIBS-gdiot-evap=
 HAVE_NETDB_H=yes
 HAVE_SCHED_H=yes
+HAVE_SYS_SOCKET_H=yes
 HAVE_UNISTD_H=yes
 HAVE_PTHREADS=yes
 HAVE_MAKEINFO=yes
