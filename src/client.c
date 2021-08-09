@@ -1,10 +1,13 @@
 #include "client.h"
 #include "config.h"
+#include "hash.h"
 #include "queue.h"
 #include "queue_data.h"
+#include "streamid.h"
 
 #include <errno.h>
 #include <inttypes.h>
+#include <limits.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,14 +18,26 @@
 
 #include "lib/hermes.h"
 
+static int client_init(struct client_context *ctx)
+{
+	ctx->registry = hash_create(UINT_MAX, streamid_compare, NULL);
+	if (ctx->registry == NULL)
+		return 1;
+
+	return 0;
+}
+
 void *client_main(void *c)
 {
 	struct client_context *ctx = c;
 	uint32_t *data;
 	unsigned char type;
 	int done = 0;
+	struct hermes_context *hctx;
+	hnode_t *node;
 
-	ctx->ret = 0;
+	if ((ctx->ret = client_init(ctx)) != 0)
+		return &ctx->ret;
 
 	while (!done) {
 		do {
@@ -44,14 +59,19 @@ void *client_main(void *c)
 	}
 	/* hermes_create_msg(); */
 
-	if ((ctx->hermes = hermes_init(0, 0)) == NULL) {
+	if ((hctx = hermes_init(0, 0)) == NULL) {
 		ctx->ret = errno;
 		return &ctx->ret;
 	}
-	hermes_connect(ctx->hermes);
-	hermes_send(ctx->hermes, NULL);
-	hermes_disconnect(ctx->hermes);
-	hermes_fini(ctx->hermes);
+	if ((node = hnode_create(hctx)) == NULL) {
+		ctx->ret = 1;
+		return &ctx->ret;
+	}
+	hash_insert(ctx->registry, node, &hctx->id, hctx->size);
+	hermes_connect(hctx);
+	hermes_send(hctx, NULL);
+	hermes_disconnect(hctx);
+	hermes_fini(hctx);
 
 	return &ctx->ret;
 }

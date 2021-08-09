@@ -1,13 +1,14 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
+#include "hash.h"
 #include "queue.h"
 
 #include "lib/hermes.h"
 
 struct client_context {
 	int ret;
-	struct hermes_context *hermes;
+	hash_t *registry;
 	struct queue source_queue;
 };
 
