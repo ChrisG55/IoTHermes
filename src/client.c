@@ -20,23 +20,27 @@ void *client_main(void *c)
 	struct client_context *ctx = c;
 	uint32_t *data;
 	unsigned char type;
+	int done = 0;
 
 	ctx->ret = 0;
 
-	do {
+	while (!done) {
+		do {
 #if HAVE_SCHED_H
-		sched_yield();
+			sched_yield();
 #endif /* HAVE_SCHED_H */
-		data = queue_deq(&ctx->source_queue, &type, NULL);
-	} while (data == NULL);
-	switch (type) {
-	case CLIENT_MESSAGE_DATA:
-		printf("client: data = 0x%"PRIx32"\n", *data);
-		free(data);
-		break;
-	default:
-		ctx->ret = EINVAL;
-		return &ctx->ret;
+			data = queue_deq(&ctx->source_queue, &type, NULL);
+		} while (data == NULL);
+		switch (type) {
+		case CLIENT_MESSAGE_DATA:
+			printf("client: data = 0x%"PRIx32"\n", *data);
+			free(data);
+			done = 1;
+			break;
+		default:
+			ctx->ret = EINVAL;
+			return &ctx->ret;
+		}
 	}
 	/* hermes_create_msg(); */
 
