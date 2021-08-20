@@ -5,6 +5,8 @@
 #include "format.h"
 #include "queue.h"
 
+#include <stddef.h>
+
 #if HAVE_NETDB_H
 #include <netdb.h>
 #else
@@ -24,6 +26,12 @@ struct client_msg_init {
 	unsigned long id;
 	struct queue *queue;
 	struct format *format;
+};
+
+struct client_msg_init_response {
+	unsigned long id;
+	size_t size;
+	int return_value;
 };
 
 #endif /* QUEUE_DATA_H */
