@@ -26,6 +26,7 @@ int main(int argc, char *argv[])
 	task_t client;
 	struct client_context cctx;
 	uint32_t *data;
+	struct queue queue;
 
 	conf.help_line = help_line;
 
@@ -36,6 +37,9 @@ int main(int argc, char *argv[])
 #else
 	srand(time(NULL));
 #endif /* HAVE_UNISTD_H && (_DEFAULT_SOURCE || _XOPEN_SOURCE) */
+
+	if (queue_init(&queue) != 0)
+		return errno2exit();
 
 	if ((rc = queue_init(&cctx.source_queue)) != 0)
 		return errno2exit();
