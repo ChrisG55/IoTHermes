@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 #if HAVE_SCHED_H
 		sched_yield();
 #endif /* HAVE_SCHED_H */
-		data = queue_deq(&queue, &type);
+		data = queue_deq(&queue, &type, NULL);
 	} while (data == NULL);
 	gdiot_printf("server: data = 0x%"PRIx32"\n", *data);
 	free(data);

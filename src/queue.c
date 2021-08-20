@@ -12,7 +12,7 @@
  * FIXME: this queue is not protected against the ABA problem.
  */
 
-void *queue_deq(struct queue *queue, unsigned char *type)
+void *queue_deq(struct queue *queue, unsigned char *type, struct node *response)
 {
 	struct node *first, *last, *next;
 	while (1) {
@@ -28,7 +28,10 @@ void *queue_deq(struct queue *queue, unsigned char *type)
 			} else {
 				if (atomic_compare_exchange_strong_explicit(&queue->head, &first, next, memory_order_acq_rel, memory_order_relaxed)) {
 					*type = next->type;
-					free(first);
+					if (response != NULL)
+						response = first;
+					else
+						free(first);
 					return next->data;
 				}
 			}
@@ -36,13 +39,14 @@ void *queue_deq(struct queue *queue, unsigned char *type)
 	}
 }
 
-int queue_enq(struct queue *queue, void *x, unsigned char type)
+int queue_enq(struct queue *queue, void *x, unsigned char type, struct node *n)
 {
 	struct node *last, *next;
-	struct node *n = calloc(1, sizeof(*n));
 	if (n == NULL) {
-		perror("calloc");
-		return 1;
+		if ((n = calloc(1, sizeof(*n))) == NULL) {
+			perror("calloc");
+			return 1;
+		}
 	}
 	n->data = x;
 	n->type = type;
