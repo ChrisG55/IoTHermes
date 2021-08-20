@@ -18,6 +18,11 @@
 
 #include "lib/hermes.h"
 
+struct source_context {
+	struct hermes_context *hctx;
+	struct queue *queue;
+};
+
 static int client_init(struct client_context *ctx)
 {
 	ctx->registry = hash_create(UINT_MAX, streamid_compare, NULL);
@@ -35,6 +40,7 @@ void *client_main(void *c)
 	int done = 0;
 	struct hermes_context *hctx;
 	hnode_t *node;
+	struct source_context *sctx;
 
 	if ((ctx->ret = client_init(ctx)) != 0)
 		return &ctx->ret;
@@ -59,11 +65,17 @@ void *client_main(void *c)
 	}
 	/* hermes_create_msg(); */
 
+	if ((sctx = calloc(1, sizeof(*sctx))) == NULL) {
+		ctx->ret = errno;
+		return &ctx->ret;
+	}
 	if ((hctx = hermes_init(0, 0)) == NULL) {
 		ctx->ret = errno;
 		return &ctx->ret;
 	}
-	if ((node = hnode_create(hctx)) == NULL) {
+	sctx->hctx = hctx;
+	if ((node = hnode_create(sctx)) == NULL) {
+		free(sctx);
 		ctx->ret = 1;
 		return &ctx->ret;
 	}
