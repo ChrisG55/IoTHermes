@@ -22,6 +22,21 @@
 #include <sched.h>
 #endif /* HAVE_SCHED_H */
 
+static void *message_data(struct source_context *ctx, void *data)
+{
+	struct client_msg_data *cmd;
+
+	if ((cmd = calloc(1, sizeof(*cmd))) == NULL) {
+		ctx->error = errno;
+		return NULL;
+	}
+	cmd->id = ctx->id;
+	cmd->size = ctx->id_size;
+	cmd->data = data;
+
+	return cmd;
+}
+
 static void *message_init(struct source_context *ctx, char *port)
 {
 	struct client_msg_init *cmi;
@@ -117,6 +132,8 @@ void *source_main(void *c)
 {
 	struct source_context *ctx = c;
 	size_t bytes_read;
+	void *msg;
+	void *data;
 
 	if ((ctx->ret = source_init(ctx)) != 0)
 		return &ctx->ret;
@@ -126,6 +143,19 @@ void *source_main(void *c)
 		ctx->ret = errno;
 		return &ctx->ret;
 	}
+
+	if ((data = calloc(1, sizeof(int))) == NULL) {
+		ctx->error = errno;
+		ctx->ret = 1;
+		return &ctx->ret;
+	}
+	*(int *)data = 0xc0ffee00;
+	if ((msg = message_data(ctx, data)) == NULL) {
+		ctx->ret = 1;
+		return &ctx->ret;
+	}
+	if ((ctx->ret = message_send(ctx, CLIENT_MESSAGE_DATA, NULL, msg)) != 0)
+		return &ctx->ret;
 
 	ctx->ret = source_fini(ctx);
 

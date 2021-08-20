@@ -44,7 +44,6 @@ int main(int argc, char *argv[])
 	int *crc;
 	task_t client, source;
 	struct client_context cctx;
-	uint32_t *data;
 	struct queue queue;
 	char *fn;
 
@@ -100,15 +99,6 @@ int main(int argc, char *argv[])
 		rv = errno2exit();
 	} else if (*crc != 0) {
 		rv = EXIT_FAILURE;
-	}
-
-	if ((data = calloc(1, sizeof(*data))) == NULL)
-		return errno2exit();
-	*data = 0xc0ffee00;
-	rc = queue_enq(&cctx.source_queue, data, CLIENT_MESSAGE_DATA, NULL);
-	if (rc != 0) {
-		free(data);
-		return errno2exit();
 	}
 
 	if ((rc = task_join(client, (void **)&crc)) != 0) {

@@ -2,6 +2,7 @@
 #include "config.h"
 #include "format.h"
 #include "hash.h"
+#include "io.h"
 #include "queue.h"
 #include "queue_data.h"
 #include "streamid.h"
@@ -33,6 +34,52 @@ static int client_init(struct client_context *ctx)
 		return 1;
 
 	return 0;
+}
+
+static int message_data(const hash_t *registry, void *msg, struct node *qnode)
+{
+	/* uint32_t *val; */
+	struct client_msg_data *cmd = msg;
+	hnode_t *hnode;
+	struct source_context *sctx;
+	int *response;
+	int rc = 0;
+
+	/* val = cmd->data; */
+	/* printf("client: data = 0x%"PRIx32"\n", *val); */
+	printf("client: data = 0x%x\n", *(int *)cmd->data);
+	hnode = hash_lookup(registry, &cmd->id, cmd->size);
+	/*
+	 * NOTE: this is a message protocol violation where either the source
+	 * did not sent a client init message first or the client init message
+	 * was never received by the client. Thus, the client has no means to
+	 * contact the source about the issue. The client will
+	 * 1) print an error message
+	 * 2) delete the message to free resources (ignore the message)
+	 * 3) return a success return code
+	 * Since the client is purely reactive, it is up to the source to figure
+	 * out the issue.
+	 */
+	if (hnode == NULL) {
+		gdiot_fprintf(stderr, "Client: message protocol violation. Received data message for unknown ID %lu and size %z. Source might be stuck in infinite loop.\n", cmd->id, cmd->size);
+		free(cmd->data);
+		free(cmd);
+		return rc;
+	}
+	sctx = hnode->hash_data;
+	free(msg);
+	if ((response = calloc(1, sizeof(*response))) == NULL) {
+		free(qnode);
+		return 1;
+	}
+	*response = rc;
+	rc = queue_enq(sctx->queue, response, CLIENT_MESSAGE_RESPONSE, qnode);
+	if (rc != 0) {
+		free(response);
+		free(qnode);
+	}
+
+	return rc;
 }
 
 static int message_init(hash_t *registry, void *msg, struct node *qnode)
@@ -83,7 +130,6 @@ init_response:
 void *client_main(void *c)
 {
 	struct client_context *ctx = c;
-	uint32_t *data;
 	void *msg;
 	unsigned char type;
 	int done = 0;
@@ -103,10 +149,12 @@ void *client_main(void *c)
 		} while (msg == NULL);
 		switch (type) {
 		case CLIENT_MESSAGE_DATA:
-			data = msg;
-			printf("client: data = 0x%"PRIx32"\n", *data);
-			free(data);
-			done = 1;
+			rc = message_data(ctx->registry, msg, node);
+			if (rc != 0) {
+				ctx->ret = rc;
+				return &ctx->ret;
+			}
+                        done = 1;
 			break;
 		case CLIENT_MESSAGE_INIT:
 			rc = message_init(ctx->registry, msg, node);

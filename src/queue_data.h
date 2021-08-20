@@ -19,6 +19,12 @@ enum queue_data {
 	CLIENT_MESSAGE_RESPONSE,
 };
 
+struct client_msg_data {
+	unsigned long id;
+	size_t size;
+	void *data;
+};
+
 struct client_msg_init {
 	const char *nodename;
 	const char *port;
