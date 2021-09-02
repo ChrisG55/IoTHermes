@@ -11,7 +11,7 @@ ALLGDIOTPROGS   = $(GDIOTBASENAMES:%=%$(PROGSSUF)$(EXESUF))
 ALLGDIOTPROGS_G = $(GDIOTBASENAMES:%=%$(PROGSSUF)_g$(EXESUF))
 
 OBJS-gdiot-src  += src/client.o src/hash.o src/pearson.o src/queue.o
-OBJS-gdiot-src  += src/streamid.o src/task.o
+OBJS-gdiot-src  += src/source.o src/streamid.o src/task.o
 OBJS-gdiot-gate += src/queue.o src/server.o src/task.o
 
 define DOGDIOTPROG
