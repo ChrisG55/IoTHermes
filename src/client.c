@@ -82,6 +82,45 @@ static int message_data(const hash_t *registry, void *msg, struct node *qnode)
 	return rc;
 }
 
+static int message_fini(hash_t *registry, void *msg, struct node *qnode)
+{
+	int rc = 0;
+	struct client_msg_fini *cmf;
+	hnode_t *hnode;
+	struct source_context *sctx;
+	int *response;
+
+	cmf = msg;
+	gdiot_printf("client %lu: fini\n", cmf->id);
+	hnode = hash_lookup(registry, &cmf->id, cmf->size);
+	if (hnode == NULL) {
+		rc = 1;
+		goto fini_end;
+	}
+	hnode = hash_delete(registry, hnode);
+	sctx = hnode->hash_data;
+	if (hermes_fini(sctx->hctx) == -1)
+		rc = errno;
+	if ((response = calloc(1, sizeof(*response))) == NULL) {
+		rc = 1;
+		goto fini_noresponse;
+	}
+	*response = rc;
+	rc = queue_enq(sctx->queue, response, CLIENT_MESSAGE_RESPONSE, qnode);
+	if (rc != 0)
+		free(response);
+
+fini_noresponse:
+	free(sctx);
+	free(hnode);
+	if (rc != 0)
+		free(qnode);
+fini_end:
+	free(msg);
+
+	return rc;
+}
+
 static int message_init(hash_t *registry, void *msg, struct node *qnode)
 {
 	int rc = 0;
@@ -135,7 +174,7 @@ void *client_main(void *c)
 	void *msg;
 	unsigned char type;
 	int done = 0;
-	struct hermes_context *hctx = NULL;
+	/* struct hermes_context *hctx = NULL; */
 	struct node *node = NULL;
 	int rc;
 
@@ -156,6 +195,13 @@ void *client_main(void *c)
 				ctx->ret = rc;
 				return &ctx->ret;
 			}
+			break;
+		case CLIENT_MESSAGE_FINI:
+			rc = message_fini(ctx->registry, msg, node);
+			if (rc != 0) {
+				ctx->ret = rc;
+				return &ctx->ret;
+			}
                         done = 1;
 			break;
 		case CLIENT_MESSAGE_INIT:
@@ -172,15 +218,10 @@ void *client_main(void *c)
 	}
 	/* hermes_create_msg(); */
 
-	hermes_connect(hctx);
-	hermes_send(hctx, NULL);
-	hermes_disconnect(hctx);
-	/* NOTE: comment for now, uncomment once CLIENT_MESSAGE_FINI is
-	   implemented */
-	/* if (hermes_fini(hctx) == -1) { */
-	/* 	ctx->ret = errno; */
-	/* 	return &ctx->ret; */
-	/* } */
+	/* NOTE: comment for now, uncomment once implemented */
+	/* hermes_connect(hctx); */
+	/* hermes_send(hctx, NULL); */
+	/* hermes_disconnect(hctx); */
 
 	return &ctx->ret;
 }

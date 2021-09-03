@@ -22,6 +22,20 @@
 #include <sched.h>
 #endif /* HAVE_SCHED_H */
 
+static void *message_fini(struct source_context *ctx)
+{
+	struct client_msg_fini *cmf;
+
+	if ((cmf = calloc(1, sizeof(*cmf))) == NULL) {
+		ctx->error = errno;
+		return cmf;
+	}
+	cmf->id = ctx->id;
+	cmf->size = ctx->id_size;
+
+	return cmf;
+}
+
 static void *message_data(struct source_context *ctx, void *data)
 {
 	struct client_msg_data *cmd;
@@ -95,6 +109,15 @@ static int message_send(struct source_context *ctx,
 
 static int source_fini(struct source_context *ctx)
 {
+	int rc;
+	void *msg;
+
+	if ((msg = message_fini(ctx)) == NULL)
+		return 1;
+	if ((rc = message_send(ctx, CLIENT_MESSAGE_FINI, NULL, msg)) != 0)
+		return 1;
+	gdiot_printf("source fini: rv = %d\n", rc);
+
 	return 0;
 }
 

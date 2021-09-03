@@ -15,6 +15,7 @@
 
 enum queue_data {
 	CLIENT_MESSAGE_DATA,
+	CLIENT_MESSAGE_FINI,
 	CLIENT_MESSAGE_INIT,
 	CLIENT_MESSAGE_RESPONSE,
 };
@@ -23,6 +24,11 @@ struct client_msg_data {
 	unsigned long id;
 	size_t size;
 	void *data;
+};
+
+struct client_msg_fini {
+	unsigned long id;
+	size_t size;
 };
 
 struct client_msg_init {
