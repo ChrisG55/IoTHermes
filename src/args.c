@@ -4,6 +4,7 @@
 #include "exit.h"
 #include "format.h"
 #include "io.h"
+#include "source.h"
 
 #include <errno.h>
 #include <stdio.h>
@@ -11,6 +12,10 @@
 #include <string.h>
 
 #include <libgd/block_code.h>
+
+#if HAVE_FCNTL_H
+#include <fcntl.h>
+#endif /* HAVE_FCNTL_H */
 
 #if HAVE_GDIOT_SRC
 #include "gdiot-src.h"
@@ -21,6 +26,10 @@
 #else
 #error "implementation is not supported"
 #endif /* HAVE_GDIOT_SRC */
+
+#if HAVE_SYS_STAT_H
+#include <sys/stat.h>
+#endif /* HAVE_SYS_STAT_H */
 
 #if HAVE_UNISTD_H
 #include <unistd.h>
@@ -381,6 +390,34 @@ static int parse_code(const char *code)
 	return -1;
 }
 
+static int parse_source(int idx, const char *fn)
+{
+	size_t len;
+
+	if (idx == nb_sources) {
+		if (create_source_context() != 0)
+			return 1;
+	}
+
+
+	len = strlen(optarg);
+	if (!((fn[len-4] == '.') && ((fn[len-3] == 'c') || (fn[len-3] == 't')) && (fn[len-2] == 's') && (fn[len-1] == 'v'))) {
+		errno = EINVAL;
+		return 1;
+	}
+
+	sctx[idx].type = fn[len-3] == 'c' ? SOURCE_CSV : SOURCE_TSV;
+#if HAVE_FCNTL_H && HAVE_SYS_STAT_H
+	sctx[idx].fd = open(optarg, O_RDONLY);
+	if (sctx[idx].fd == -1)
+		return sctx[idx].fd;
+#else
+#error "system does not support open function"
+#endif /* HAVE_FCNTL_H && HAVE_SYS_STAT_H */
+
+	return 0;
+}
+
 #if HAVE_UNISTD_H && (_XOPEN_VERSION >= 4 || defined(_XOPEN_XPG4) || defined(_XOPEN_XPG3) || defined(_XOPEN_XPG2))
 void parse_args(int argc, char *argv[])
 {
@@ -393,7 +430,7 @@ void parse_args(int argc, char *argv[])
 	init_args();
 
 	opterr = 0;
-	while ((c = getopt(argc, argv, "c:f:hs:")) != -1) {
+	while ((c = getopt(argc, argv, "c:f:hi:s:")) != -1) {
 		switch (c) {
 		case 'c':
 		{
@@ -409,6 +446,10 @@ void parse_args(int argc, char *argv[])
 		case 'h':
 			rv = usage(argv[0]);
 			gdiot_exit(rv < 0);
+		case 'i':
+			if ((rv = parse_source(source_idx++, optarg)) != 0)
+				errflg++;
+			break;
 		case 's':
 			conf.server = optarg;
 			break;
@@ -443,7 +484,7 @@ int usage(const char *progname)
 	if (conf.help_line != NULL)
 		if ((rv = gdiot_printf("%s\n", conf.help_line)) < 0)
 			return rv;
-	if ((r = gdiot_printf("Usage: %s [-c <code>] [-f <fmt>] [-h] [-s <ip>]\n", progname)) < 0)
+	if ((r = gdiot_printf("Usage: %s [-c <code>] [-f <fmt>] [-h] [-i <file>] [-s <ip>]\n", progname)) < 0)
 		return r;
 	rv += r;
 	if ((r = gdiot_printf("  -c   block code type (default: %s)\n", DEFAULT_BLKCODE)) < 0)
@@ -452,6 +493,9 @@ int usage(const char *progname)
 	     return -1;
 	rv += r;
 	if ((r = gdiot_puts("  -h   help message")) == EOF)
+		return -1;
+	rv += r;
+	if ((r = gdiot_puts("  -i   data source (must be defined)")) == EOF)
 		return -1;
 	rv += r;
 	if ((r = gdiot_printf("  -s   IP address of the server (default: %s)\n", DEFAULT_SERVER)) < 0)
