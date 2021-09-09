@@ -13,6 +13,6 @@ config.*
 !config.tmpsh
 !doc/config.tmpi
 gdiot-*
-!gdiot-*.c
+!gdiot-*.[ch]
 !gdiot-*.texi
 /src/gdiotversion.h

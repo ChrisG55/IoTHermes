@@ -6,6 +6,7 @@
 #include "client.h"
 #include "config.h"
 #include "exit.h"
+#include "gdiot-src.h"
 #include "io.h"
 #include "queue.h"
 #include "queue_data.h"
