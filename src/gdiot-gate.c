@@ -9,6 +9,7 @@
 #include "io.h"
 #include "queue.h"
 #include "server.h"
+#include "source.h"
 #include "task.h"
 
 #include <errno.h>
@@ -22,6 +23,9 @@
 #endif /* HAVE_SCHED_H */
 
 static const char *help_line = "GDIoT intermediate node reference implementation";
+
+struct source_context *sctx = NULL;
+int nb_sources = 0;
 
 int main(int argc, char *argv[])
 {
