@@ -5,6 +5,7 @@
 #include "args.h"
 #include "config.h"
 #include "gdiot-evap.h"
+#include "source.h"
 
 #include <stdlib.h>
 #include <time.h>
@@ -12,6 +13,9 @@
 #include "lib/hermes.h"
 
 static const char *help_line = "GDIoT sink node reference implementation";
+
+struct source_context *sctx = NULL;
+int nb_sources = 0;
 
 int main(int argc, char *argv[])
 {
