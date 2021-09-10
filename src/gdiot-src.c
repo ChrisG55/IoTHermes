@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 	task_t client, source;
 	struct client_context cctx;
 	struct queue queue;
-	char *fn;
+	int i;
 
 	conf.help_line = help_line;
 
@@ -86,26 +86,14 @@ int main(int argc, char *argv[])
 		return errno2exit();
 	}
 
-	if ((sctx = calloc(1, sizeof(*sctx))) == NULL)
+	if (sctx == NULL) {
+		errno = EINVAL;
 		return errno2exit();
-	nb_sources++;
-	if ((fn = calloc(9, sizeof(*fn))) == NULL)
-		return errno2exit();
-	fn[0] = 't';
-	fn[1] = 'e';
-	fn[2] = 's';
-	fn[3] = 't';
-	fn[4] = '.';
-	fn[5] = 'c';
-	fn[6] = 's';
-	fn[7] = 'v';
-	fn[8] = '\0';
-	sctx[0].type = SOURCE_CSV;
-#if HAVE_FCNTL_H && HAVE_SYS_STAT_H
-	sctx[0].fd = open(fn, O_RDONLY);
-#endif
-	sctx[0].queue = &queue;
-	sctx[0].client_queue = &cctx.source_queue;
+	}
+	for (i = 0; i < nb_sources; i++) {
+		sctx[i].queue = &queue;
+		sctx[i].client_queue = &cctx.source_queue;
+	}
 
 	if ((rc = task_create(source_main, &source, (void *)&sctx[0])) != 0) {
 		errno = rc;
@@ -128,8 +116,6 @@ int main(int argc, char *argv[])
 
 	task_free(client);
 	task_free(source);
-
-	free(fn);
 
 	return rv;
 }
