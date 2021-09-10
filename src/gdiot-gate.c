@@ -5,6 +5,7 @@
 #include "args.h"
 #include "config.h"
 #include "exit.h"
+#include "gdiot-gate.h"
 #include "io.h"
 #include "queue.h"
 #include "server.h"
