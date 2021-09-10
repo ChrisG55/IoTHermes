@@ -4,6 +4,7 @@
  */
 #include "args.h"
 #include "config.h"
+#include "gdiot-evap.h"
 
 #include <stdlib.h>
 #include <time.h>
