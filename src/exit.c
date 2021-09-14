@@ -26,35 +26,41 @@ int errno2exit(void)
 		rc = 5;
 		break;
 #if HAVE_UNISTD_H && (_XOPEN_VERSION >= 4 || defined(_XOPEN_XPG4) || defined(_XOPEN_XPG3) || defined(_XOPEN_XPG2))
-	case EAGAIN:
+	case E2BIG:
 		rc = 6;
 		break;
-	case EBADF:
+	case EAGAIN:
 		rc = 7;
 		break;
-	case EFBIG:
+	case EBADF:
 		rc = 8;
 		break;
-	case EINTR:
+	case EFAULT:
 		rc = 9;
 		break;
-	case EINVAL:
+	case EFBIG:
 		rc = 10;
 		break;
-	case EIO:
+	case EINTR:
 		rc = 11;
 		break;
-	case ENOMEM:
+	case EINVAL:
 		rc = 12;
 		break;
-	case ENOSPC:
+	case EIO:
 		rc = 13;
 		break;
-	case ENXIO:
+	case ENOMEM:
 		rc = 14;
 		break;
-	case EPIPE:
+	case ENOSPC:
 		rc = 15;
+		break;
+	case ENXIO:
+		rc = 16;
+		break;
+	case EPIPE:
+		rc = 17;
 		break;
 #endif /* _XOPEN_VERSION || _XOPEN_XPG4 || _XOPEN_XPG3 || _XOPEN_XPG2 */
 	default:
