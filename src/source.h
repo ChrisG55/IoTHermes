@@ -3,10 +3,15 @@
 #ifndef SOURCE_H
 #define SOURCE_H
 
+#include "config.h"
 #include "format.h"
 #include "queue.h"
 
-#include <stddef.h>
+#include <stdio.h>
+
+#if HAVE_CSV_H
+#include <csv.h>
+#endif /* HAVE_CSV_H */
 
 /* Type information for the sub-context, which can be CSV, I2C, GPIO or other */
 enum source_type {
@@ -19,6 +24,15 @@ struct source_context {
 	int error;
 	int ret;
 	void *(*read)(struct source_context *);
+	/* CSV runtime variables */
+	unsigned int field;
+	unsigned int row;
+	void *data;
+	char *buf;
+	FILE *fp;
+#if HAVE_CSV_H
+	struct csv_parser *p;
+#endif /* HAVE_CSV_H */
 	/* initialization or runtime variables */
 	unsigned long id;
 	size_t id_size;
