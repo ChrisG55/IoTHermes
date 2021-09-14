@@ -11,6 +11,7 @@
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #if HAVE_CSV_H
 #include <csv.h>
@@ -319,8 +320,7 @@ csv_init_parser_err:
 void *csv_data(struct source_context *ctx)
 {
 	char delim;
-	char *buf, *record_end;
-	char const *buf_base;
+	char *buf, *buf_base, *record_end;
 	int eof, record_complete;
 	void *data;
 	size_t bytes_read, bytes_to_read;

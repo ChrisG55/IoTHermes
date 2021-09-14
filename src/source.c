@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 
 #include "config.h"
+#include "csv.h"
 #include "io.h"
 #include "queue_data.h"
 #include "source.h"
@@ -112,6 +113,15 @@ static int source_fini(struct source_context *ctx)
 	int rc;
 	void *msg;
 
+	switch (ctx->type) {
+	case SOURCE_CSV:
+	case SOURCE_TSV:
+		csv_finish(ctx);
+		break;
+	default:
+		return 1;
+	}
+
 	if ((msg = message_fini(ctx)) == NULL)
 		return 1;
 	if ((rc = message_send(ctx, CLIENT_MESSAGE_FINI, NULL, msg)) != 0)
@@ -131,6 +141,10 @@ static int source_init(struct source_context *ctx)
 	switch (ctx->type) {
 	case SOURCE_CSV:
 	case SOURCE_TSV:
+		if (csv_initialize(ctx, BUFSIZ) != 0)
+			return 1;
+
+		ctx->read = csv_data;
 		break;
 	default:
 		return 1;
@@ -157,22 +171,25 @@ void *source_main(void *c)
 	size_t bytes_read;
 	void *msg;
 	void *data;
+	unsigned char type;
+	struct node *node = NULL;
 
 	if ((ctx->ret = source_init(ctx)) != 0)
 		return &ctx->ret;
 
-	bytes_read = 0;
-	if ((bytes_read == 0) && (ctx->error != 0)) {
+	data = ctx->read(ctx);
+	if ((data == NULL) && (ctx->error != 0)) {
 		ctx->ret = errno;
 		return &ctx->ret;
 	}
 
-	if ((data = calloc(1, sizeof(int))) == NULL) {
-		ctx->error = errno;
-		ctx->ret = 1;
-		return &ctx->ret;
-	}
-	*(int *)data = 0xc0ffee00;
+	/* free(data); */
+	/* if ((data = calloc(1, sizeof(int))) == NULL) { */
+	/* 	ctx->error = errno; */
+	/* 	ctx->ret = 1; */
+	/* 	return &ctx->ret; */
+	/* } */
+	/* *(int *)data = 0xc0ffee00; */
 	if ((msg = message_data(ctx, data)) == NULL) {
 		ctx->ret = 1;
 		return &ctx->ret;
