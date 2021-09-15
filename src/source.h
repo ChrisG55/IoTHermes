@@ -3,6 +3,7 @@
 #ifndef SOURCE_H
 #define SOURCE_H
 
+#include "format.h"
 #include "queue.h"
 
 #include <stddef.h>
@@ -26,6 +27,7 @@ struct source_context {
 	int fd;
 	struct queue *queue;
 	struct queue *client_queue;
+	struct format format;
 };
 
 void *source_main(void *c);
