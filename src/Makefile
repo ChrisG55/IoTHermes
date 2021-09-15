@@ -15,7 +15,8 @@ OBJS-gdiot-src  += src/source.o src/streamid.o src/task.o
 OBJS-gdiot-gate += src/queue.o src/server.o src/task.o
 
 define DOGDIOTPROG
-OBJS-$(1) += src/args.o src/exit.o src/io.o src/$(1).o $(OBJS-$(1)-yes)
+OBJS-$(1) += src/args.o src/exit.o src/format.o src/io.o src/$(1).o
+OBJS-$(1) += $(OBJS-$(1)-yes)
 $(1)$(PROGSSUF)_g$(EXESUF): $$(OBJS-$(1))
 $$(OBJS-$(1)): | src
 $$(OBJS-$(1)): CFLAGS  += $(CFLAGS-$(1))
