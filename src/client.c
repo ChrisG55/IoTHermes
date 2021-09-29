@@ -1,5 +1,6 @@
 #include "client.h"
 #include "config.h"
+#include "format.h"
 #include "hash.h"
 #include "queue.h"
 #include "queue_data.h"
@@ -21,6 +22,7 @@
 struct source_context {
 	struct hermes_context *hctx;
 	struct queue *queue;
+	struct format *format;
 };
 
 static int client_init(struct client_context *ctx)
