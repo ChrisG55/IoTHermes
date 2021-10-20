@@ -14,6 +14,7 @@
 #include <inttypes.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <time.h>
 
 #if HAVE_SCHED_H
 #include <sched.h>
@@ -34,6 +35,12 @@ int main(int argc, char *argv[])
 	conf.help_line = help_line;
 
 	parse_args(argc, argv);
+
+#if HAVE_UNISTD_H && (defined(_DEFAULT_SOURCE) || defined(_XOPEN_SOURCE))
+	srand48(time(NULL));
+#else
+	srand(time(NULL));
+#endif /* HAVE_UNISTD_H && (_DEFAULT_SOURCE || _XOPEN_SOURCE) */
 
 	sctx.queue = &queue;
 	if ((rc = queue_init(&queue)) != 0)
