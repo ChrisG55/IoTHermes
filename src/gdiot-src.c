@@ -4,6 +4,7 @@
  */
 #include "args.h"
 #include "client.h"
+#include "config.h"
 #include "exit.h"
 #include "io.h"
 #include "queue.h"
@@ -12,6 +13,7 @@
 #include <errno.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <time.h>
 
 static const char *help_line = "GDIoT source node reference implementation";
 
@@ -27,6 +29,12 @@ int main(int argc, char *argv[])
 	conf.help_line = help_line;
 
 	parse_args(argc, argv);
+
+#if HAVE_UNISTD_H && (defined(_DEFAULT_SOURCE) || defined(_XOPEN_SOURCE))
+	srand48(time(NULL));
+#else
+	srand(time(NULL));
+#endif /* HAVE_UNISTD_H && (_DEFAULT_SOURCE || _XOPEN_SOURCE) */
 
 	if ((rc = queue_init(&cctx.source_queue)) != 0)
 		return errno2exit();
